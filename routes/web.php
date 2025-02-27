@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProduitController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +20,17 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('pages.Admin');
 })->middleware(['auth'])->name('dashboard');
+Route::get('/dash', function () {
+    return view('pages.Admin');
+});
 
 require __DIR__.'/auth.php';
+
+
+
+
+
+Route::get('/dash',[ProduitController::class,'dashviews']);
+Route::get('/logout',[AuthenticatedSessionController::class,'destroy']);

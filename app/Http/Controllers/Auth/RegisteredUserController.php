@@ -33,18 +33,31 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
-
+        // $request->validate([
+        //     'name' => ['required', 'string', 'max:255'],
+        //     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        //     'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        // ]);
+        // 'name',
+        // 'email',
+        // 'password',
+        // 'images',
+        // 'role_id',
+        // 'addresses'
+// dd($r)
+$imageName = time().'.'.$request->img->extension();
+    $request->img->move(public_path('img'), $imageName);
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-        ]);
+            'role_id' => 1,
+            'addresses_id' => 1,
+            'img' => 'C:\\Users\\Youcode\\Desktop\\ClickVentess\\storage\\img\\'.$imageName
 
+        ]);
+        
+        
         event(new Registered($user));
 
         Auth::login($user);

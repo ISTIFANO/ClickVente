@@ -9,7 +9,7 @@
         <!-- Validation Errors -->
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-        <form method="POST" action="{{ route('register') }}">
+        <form method="POST" enctype="multipart/form-data" action="{{ route('register') }}">
             @csrf
 
             <!-- Name -->
@@ -35,7 +35,8 @@
                                 name="password"
                                 required autocomplete="new-password" />
             </div>
-
+            <label for="image">Image:</label>
+            <input type="file" name="img" id="image">
             <!-- Confirm Password -->
             <div class="mt-4">
                 <x-label for="password_confirmation" :value="__('Confirm Password')" />

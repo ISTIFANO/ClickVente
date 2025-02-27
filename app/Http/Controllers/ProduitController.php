@@ -1,13 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\View;
 use App\Models\Produit;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ProduitController extends Controller
 {
+    public function dashviews(){
+        // return View::make('pages.Admin');
 
+        return view('pages.admin');
+    }
+    
     public function show(){
         $product = Produit::get();
 
