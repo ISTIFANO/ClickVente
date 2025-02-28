@@ -9,19 +9,19 @@ class Produit extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name',
+        'image',
+        'titre',
         'description',
-        'unit',
-        'price',
+        'prixunite',
         'stock',
-        'sous_categorie_id',
-        'admin_id'
+        'souscategorie_id',
+        'users_id'
     ];
 
     
     public function sousCategorie()
     {
-        return $this->belongsTo(Sous_Categorie::class, 'sous_categorie_id');
+        return $this->belongsTo(Sous_Categorie::class);
     }
 
     public function admin()

@@ -41,7 +41,7 @@
       
       
        
-        <a href="/Auth/logout" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg mb-2 transition-colors">
+        <a href="/logout" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg mb-2 transition-colors">
   <i class="bi bi-box-arrow-right mr-3 text-lg"></i>
   <span>Logout</span>
 </a>

@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProduitController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\CategorieController;
+use App\Models\Categorie;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +18,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('Home');
 });
 
 Route::get('/dashboard', function () {
@@ -29,8 +31,20 @@ Route::get('/dash', function () {
 require __DIR__.'/auth.php';
 
 
+Route::get('/',[ProduitController::class,'product']);
 
 
+Route::get('/Categories',[CategorieController::class,'show']);
+Route::post('/categorie/delete',[CategorieController::class,'destroy']);
+Route::post('/categorie/create',[CategorieController::class,'store']);
+Route::post('/categorie/edit',[CategorieController::class,'edit']);
 
+Route::get('/Produits',[ProduitController::class,'show']);
+Route::get('/Product/details/{id}',[ProduitController::class,'details']);
+Route::post('Product/details/Pannier/Ajouter',[ProduitController::class,'pannier']);
+Route::get('/Pannier/showpannier', [ProduitController::class, 'showpannier']);
+
+Route::delete('produits/destroy',[ProduitController::class,'destroy']);
+Route::post('produit/store',[ProduitController::class,'store']);
 Route::get('/dash',[ProduitController::class,'dashviews']);
 Route::get('/logout',[AuthenticatedSessionController::class,'destroy']);
