@@ -43,6 +43,7 @@ Route::get('/Produits',[ProduitController::class,'show']);
 Route::get('/Product/details/{id}',[ProduitController::class,'details']);
 Route::post('Product/details/Pannier/Ajouter',[ProduitController::class,'pannier']);
 Route::get('/Pannier/showpannier', [ProduitController::class, 'showpannier']);
+Route::delete('/Pannier/delete_produit_from_pannier', [ProduitController::class, 'delete_produit_from_pannier']);
 
 Route::delete('produits/destroy',[ProduitController::class,'destroy']);
 Route::post('produit/store',[ProduitController::class,'store']);

@@ -35,8 +35,9 @@ if (isset($pannier[$id])) {
     ];
 }
 
-// dd($pannier);
-session()->put($pannier);
+//  dd($pannier);
+session()->put('pannier', $pannier);
+// dd(session('pannier'));
 
 return redirect('/Pannier/showpannier');
 
@@ -48,8 +49,10 @@ return redirect('/Pannier/showpannier');
     
     return view('content.pannier', compact('cart'));
 }
-public function delete_produit_from_pannier($id)
+public function delete_produit_from_pannier(Request $request)
 {
+    $id = $request['id'];
+    
     $cart = session()->get('pannier');
     if (isset($cart[$id])) {
 
