@@ -12,7 +12,35 @@ use Illuminate\Support\Facades\View;
 
 class ProduitController extends Controller
 {
-
+    public function Home_pannier(Request $request){
+        $id = $request["id"];
+        // dd($request["id"]);
+                $produit = Produit::find($request["id"]);
+        
+        if(!$produit){
+            return back();
+        }
+            $pannier= session()->get('pannier',[]);
+        // dd($pannier);   
+        
+        if (isset($pannier[$id])) {
+            $pannier[$id]['stock'] +=$request->quantite;
+        }else{
+            $pannier[$id] = [
+                'name' => $produit->titre,
+                'price' => $produit->prixunite,
+                'stock' => $request->quantite,
+                'image' => $produit->image,
+            ];
+        }
+        
+        //  dd($pannier);
+        session()->put('pannier', $pannier);
+        // dd(session('pannier'));
+        
+        return back();
+        
+            }
     public function pannier(Request $request){
 $id = $request["id"];
 // dd($request["id"]);
@@ -50,6 +78,18 @@ return redirect('/Pannier/showpannier');
     return view('content.pannier', compact('cart'));
 }
 public function delete_produit_from_pannier(Request $request)
+{
+    $id = $request['id'];
+    
+    $cart = session()->get('pannier');
+    if (isset($cart[$id])) {
+
+        unset($cart[$id]);
+    }
+ session()->put('pannier', $cart);
+    return back();
+}
+public function delete_produit(Request $request)
 {
     $id = $request['id'];
     

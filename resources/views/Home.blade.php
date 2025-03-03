@@ -75,11 +75,12 @@
              
                     
                     <div class="relative">
-                        <button class="text-white p-2 rounded-full hover:bg-blue-800 transition-colors duration-300">
+                        <button id="cart-btn" class="relative p-2 bg-gray-200 rounded-full hover:bg-gray-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                            </svg>
-                            <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center animate-pulse-slow">3</span>
+                            </svg>                            <span id="cart-count" class="absolute top-0 right-0 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                                2
+                            </span>
                         </button>
                     </div>
                    <a href="login"> <button class="text-white p-2 rounded-full hover:bg-blue-800 transition-colors duration-300">
@@ -218,49 +219,62 @@
             </div>
         </div>
     </section> --}}
-<section class="py-16 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold text-gray-900 mb-8 relative inline-block fade-in">
-            Produits Populaires
-            <span class="block h-1 w-24 bg-blue-600 mt-2"></span>
-        </h2>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            @foreach($products as $product) 
-            <div class="bg-white rounded-xl shadow-md overflow-hidden hover-translate transition-all duration-300 hover:shadow-xl">
-                <div class="h-64 bg-gray-200 relative overflow-hidden group">
-                    <img src="{{ $product->image ? asset('storage/'.$product->image) : '/api/placeholder/400/400' }}" alt="{{ $product->titre }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                    @if($product->is_new)
-                    <span class="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Nouveau</span>
-                    @elseif($product->discount)
-                    <span class="absolute top-4 right-4 bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">-{{ $product->discount }}%</span>
-                    @endif
-                </div>
-                <div class="p-5">
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">{{ $product->titre }}</h3>
-                    {{-- <p class="text-sm text-gray-500 mb-2">{{ $product->sousCategorie->title }}</p> --}}
-                    <p class="text-xl font-bold text-blue-600 mb-4">{{ $product->prixunite }} €</p>
-                    <div class="flex space-x-2">
-                        <button class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                            
-                            Ajouter
-                        </button>
-                        <a href="/Product/details/{{ $product->id }}">
-                            <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg transition-colors duration-300">
-                                View Details
-                            </button>
-                        </a>
-                        
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-8 relative inline-block fade-in">
+                Produits Populaires
+                <span class="block h-1 w-24 bg-blue-600 mt-2"></span>
+            </h2>
+    
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                @foreach($products as $product) 
+                <div class="bg-white rounded-xl shadow-md overflow-hidden hover-translate transition-all duration-300 hover:shadow-xl">
+                    <div class="h-64 bg-gray-200 relative overflow-hidden group">
+                        <img src="{{ $product->image ? asset('storage/'.$product->image) : '/api/placeholder/400/400' }}" alt="{{ $product->titre }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        @if($product->is_new)
+                        <span class="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Nouveau</span>
+                        @elseif($product->discount)
+                        <span class="absolute top-4 right-4 bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">-{{ $product->discount }}%</span>
+                        @endif
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">{{ $product->titre }}</h3>
+                        <p class="text-xl font-bold text-blue-600 mb-4">{{ $product->prixunite }} €</p>
+                        <div class="flex space-x-2">
+                            <form action="Product/Home_pannier" method="POST" class="mt-6">
+                                @csrf
+                                <label for="quantite" class="block text-gray-700 font-bold mb-2">Quantité :</label>
+                                <div class="flex items-center gap-4">
+                                    <input type="number" id="quantite" name="quantite" value="1" min="1" 
+                                           class="w-24 p-3 border border-gray-300 rounded-lg text-center shadow-sm focus:ring focus:ring-blue-300">
+                                   <input type="hidden" value="{{ $product->id }}" name="id">
+                                           <button type="submit" class="px-4 py-2 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition flex items-center space-x-2 text-sm">
+                                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M3 3h18v18H3z"></path>
+                                                    <path d="M3 12h18"></path>
+                                                    <path d="M12 3v18"></path>
+                                                </svg>
+                                           </button>
+                                </div>
+                            </form>
+                            <a href="/Product/details/{{ $product->id }}">
+                                <button class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-1 px-3 rounded-lg transition-colors duration-300 flex items-center space-x-2 text-sm">
+                                    <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M8 6h13l-1.39 10.59a2 2 0 0 1-2 1.91H7.39a2 2 0 0 1-2-1.91L8 6z"></path>
+                                        <path d="M6 6l2-2h10l2 2"></path>
+                                    </svg>
+                                    <span> Details</span>
+                                </button>
+                            </a>
+                        </div>
                     </div>
                 </div>
+                @endforeach
             </div>
-            @endforeach
         </div>
-    </div>
-</section>
+    </section>
+    
+    
 
     <!-- Promotions Section -->
     <section class="py-16 bg-white">
@@ -332,4 +346,51 @@
                             <p class="text-gray-300">&copy; 2025 GameSphere. Tous droits réservés.</p>
                         </div>
                     </footer>
+                    <div id="cart-overlay" class="fixed top-0 right-0 w-80 h-full bg-white shadow-lg p-6 transform translate-x-full transition-transform ease-in-out duration-300">
+                        <h2 class="text-xl font-bold">Your Cart</h2>
+                        @if(session('pannier'))
+                        <div class="bg-white p-8 rounded-lg shadow-md border border-gray-200">
+                            @foreach(session('pannier') as $id => $produit)
+                                <div class="flex items-center justify-between mb-4">
+                                    <img src="{{ $produit['image'] }}" alt="{{ $produit['name'] }}" class="w-24 h-24 object-cover rounded-lg">
+                                    <div class="ml-4 flex-1">
+                                        <p class="font-semibold">{{ $produit['name'] }}</p>
+                                        <p>{{ $produit['price'] }} MAD</p>
+                                        <p>Quantité: {{ $produit['stock'] }}</p>
+                                    </div>
+                                    <div>
+                                        <form action="/Pannier/delete" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="hidden" name="id" value="{{$id}}">
+                                            <input type="submit" class="text-red-500 hover:text-red-700" value="Supprimer">
+                                        </form>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="mt-6 text-right">
+                         <p class="text-xl font-bold">Total: {{ array_sum(array_column(session('pannier'), 'price')) }} MAD</p>
+                        </div>
+                    @else
+                        <p class="text-center text-gray-700">Votre panier est vide</p>
+                    @endif
+                        <button id="close-cart" class="mt-4 bg-red-500 text-white px-4 py-2 hover:bg-red-600 w-full rounded">Close</button>
+                    </div>  
+                    </div>
+                </div>
+                <script>
+                const modal = document.getElementById("jobModal");
+                const cartBtn = document.getElementById("cart-btn");
+    const cartOverlay = document.getElementById("cart-overlay");
+    const closeCart = document.getElementById("close-cart");
+
+    cartBtn.addEventListener("click", () => {
+        cartOverlay.classList.toggle("translate-x-full");
+    });
+
+    closeCart.addEventListener("click", () => {
+        cartOverlay.classList.add("translate-x-full");
+    });
+                    </script>
                     
