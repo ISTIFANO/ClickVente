@@ -52,3 +52,28 @@ Route::delete('produits/destroy',[ProduitController::class,'destroy']);
 Route::post('produit/store',[ProduitController::class,'store']);
 Route::get('/dash',[ProduitController::class,'dashviews']);
 Route::get('/logout',[AuthenticatedSessionController::class,'destroy']);
+
+
+
+//payement 
+
+Route::get('/payment', [PaymentController::class,'showPaymentForm'])->name('payment.form');
+Route::post('/process-payment',  [PaymentController::class,'processPayment'])->name('process.payment');
+Route::get('/payment/success', function () {
+    return 'Payment Successful!';
+})->name('payment.success');
+Route::get('/payment/failure', function () {
+    return 'Payment Failed!';
+})->name('payment.failure');
+
+Route::get('/payment/success', function () {
+    return view('payment-success');
+})->name('payment.success');
+
+Route::get('/payment/failure', function () {
+    return view('payment-failure');
+})->name('payment.failure');
+
+//test 
+
+Route::get('/order', [ProduitController::class, 'commande']);
