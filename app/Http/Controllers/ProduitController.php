@@ -194,45 +194,7 @@ class ProduitController extends Controller
         return back();
     }
 
-    public function commande(Request $request){
-
-        $pannierinfo = session()->get('pannier');
-
-        // dd($pannierinfo);
-        if(empty($pannierinfo)){
-            return back();
-        }else{
-
-            $total = array_sum(array_map( function ($item){
-
-                return $item["price"] * $item["stock"];
-
-            },$pannierinfo));
-
-        }
-
-       
-        $commande = Commande::create([
-
-            'client_id' => auth()->id(),
-            'prix_totale' => $total,
-            'status' => 'pending',
     
-
-        ]);
-        foreach ($pannierinfo as $id => $value) {
-         Commande_Item::create([
-            'produit_id' => $value->id,
-            'commande_id' => $commande->id,
-            'prix' => $total,
-        'quantite' => $total
-    
-    ]);
-        }
-
-
-    }
-
 
 
 }

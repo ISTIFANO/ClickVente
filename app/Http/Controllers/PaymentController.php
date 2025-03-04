@@ -1,4 +1,6 @@
 <?php
+namespace App\Http\Controllers;
+
 use Stripe\Charge;
 use Stripe\Stripe;
 use Illuminate\Http\Request;

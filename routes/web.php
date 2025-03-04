@@ -1,10 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProduitController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\CategorieController;
 use App\Models\Categorie;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProduitController;
+use App\Http\Controllers\CommandeController;
+use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,4 +78,4 @@ Route::get('/payment/failure', function () {
 
 //test 
 
-Route::get('/order', [ProduitController::class, 'commande']);
+Route::get('/order', [CommandeController::class, 'commande']);
