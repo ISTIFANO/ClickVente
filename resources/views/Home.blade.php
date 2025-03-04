@@ -365,7 +365,8 @@
                                             <input type="hidden" name="id" value="{{$id}}">
                                             <input type="submit" class="text-red-500 hover:text-red-700" value="Supprimer">
                                         </form>
-                                        
+                                        <a class="text-red-500 hover:text-red-700" href="/Card" ></a>
+{{-- <button>Card</button> --}}
                                     </div>
                                 </div>
                             @endforeach

@@ -60,7 +60,7 @@ class ProduitController extends Controller
             $pannier[$id]['stock'] += $request->quantite;
         } else {
             $pannier[$id] = [
-                'name' => $produit->titre,
+                'na me' => $produit->titre,
                 'price' => $produit->prixunite,
                 'stock' => $request->quantite,
                 'image' => $produit->image,

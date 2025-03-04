@@ -79,3 +79,6 @@ Route::get('/payment/failure', function () {
 //test 
 
 Route::get('/order', [CommandeController::class, 'commande']);
+Route::get('/Card', [CommandeController::class, 'Card']);
+Route::get('/AddToCard', [CommandeController::class, 'AddToCard']);
+
