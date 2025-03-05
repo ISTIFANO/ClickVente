@@ -23,25 +23,30 @@
           <span>Dashboard</span>
         </a>
         
-        <a href="/validate" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg mb-2 transition-colors">
+        <a href="/Categories" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg mb-2 transition-colors">
         <i class="bi bi-star mr-3 text-lg"></i>
-        <span>Validation</span>
+        <span>Categories</span>
         </a>
         
-        <a href="/Tsalle" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg mb-2 transition-colors">
+        <a href="/Produits" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg mb-2 transition-colors">
           <i class="bi bi-tag mr-3 text-lg"></i>
-          <span>salles</span>
+          <span>Produit</span>
         </a>
         
-        <a href="/users" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg mb-2 transition-colors">
+        <a href="/Commande/showCommandes" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg mb-2 transition-colors">
           <i class="bi bi-folder mr-3 text-lg"></i>
-          <span>users</span>
+          <span>Validation</span>
         </a>
         
       
       
        
-        <a href="/logout" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg mb-2 transition-colors">
+        <a href="/" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg mb-2 transition-colors">
+  <i class="bi bi-box-arrow-right mr-3 text-lg"></i>
+  <span>Logout</span>
+</a>
+
+<a href="/logout" class="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg mb-2 transition-colors">
   <i class="bi bi-box-arrow-right mr-3 text-lg"></i>
   <span>Logout</span>
 </a>

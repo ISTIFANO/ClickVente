@@ -55,12 +55,14 @@ Route::post('produit/store',[ProduitController::class,'store']);
 Route::get('/dash',[ProduitController::class,'dashviews']);
 Route::get('/logout',[AuthenticatedSessionController::class,'destroy']);
 
+Route::post('/Commande/Staus',[CommandeController::class,'Changestatus']);
 
+Route::get('/Commande/showCommandes',[CommandeController::class,'showCommandes']);
 
 //payement 
 
 Route::get('/payment', [PaymentController::class,'showPaymentForm'])->name('payment.form');
-Route::post('/process-payment',  [PaymentController::class,'processPayment'])->name('process.payment');
+Route::post('/process-payment',  [CommandeController::class,'AddToCard']);
 Route::get('/payment/success', function () {
     return 'Payment Successful!';
 })->name('payment.success');

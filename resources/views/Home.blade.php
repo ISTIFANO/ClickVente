@@ -137,7 +137,7 @@
                 
                 <div class="md:w-1/2 flex justify-center">
                     <div class="relative w-72 h-72 md:w-96 md:h-96 animate-float">
-                        <img src="/api/placeholder/400/400" alt="PlayStation 5" class="rounded-lg shadow-2xl">
+                        <img src="" alt="PlayStation 5" class="rounded-lg shadow-2xl">
                         <div class="absolute -bottom-4 -right-4 bg-blue-600 text-white px-4 py-2 rounded-lg font-bold shadow-lg animate-pulse-slow">
                             NOUVEAU
                         </div>
@@ -377,7 +377,7 @@
                     @else
                         <p class="text-center text-gray-700">Votre panier est vide</p>
                     @endif
-                        <button id="close-cart" class="mt-4 bg-red-500 text-white px-4 py-2 hover:bg-red-600 w-full rounded">Close</button>
+                      <a href="/order">  <button id="close-cart" class="mt-4 bg-red-500 text-white px-4 py-2 hover:bg-red-600 w-full rounded">Order</button></a>
                     </div>  
                     </div>
                 </div>
