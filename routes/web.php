@@ -1,10 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProduitController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\CategorieController;
 use App\Models\Categorie;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProduitController;
+use App\Http\Controllers\CommandeController;
+use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,10 +44,47 @@ Route::post('/categorie/edit',[CategorieController::class,'edit']);
 Route::get('/Produits',[ProduitController::class,'show']);
 Route::get('/Product/details/{id}',[ProduitController::class,'details']);
 Route::post('Product/details/Pannier/Ajouter',[ProduitController::class,'pannier']);
+Route::post('Product/Home_pannier',[ProduitController::class,'Home_pannier']);
+Route::delete('/Pannier/delete', [ProduitController::class, 'delete_produit']);
+
 Route::get('/Pannier/showpannier', [ProduitController::class, 'showpannier']);
-Route::delete('/Pannier/delete_produit_from_pannier', [ProduitController::class, 'delete_produit_from_pannier']);
+Route::get('/Pannier/delete_produit_from_pannier/{id}', [ProduitController::class, 'delete_produit_from_pannier']);
 
 Route::delete('produits/destroy',[ProduitController::class,'destroy']);
 Route::post('produit/store',[ProduitController::class,'store']);
 Route::get('/dash',[ProduitController::class,'dashviews']);
 Route::get('/logout',[AuthenticatedSessionController::class,'destroy']);
+
+Route::post('/Commande/Staus',[CommandeController::class,'Changestatus']);
+
+Route::get('/Commande/showCommandes',[CommandeController::class,'showCommandes']);
+
+//payement 
+
+Route::get('/payment', [PaymentController::class,'showPaymentForm'])->name('payment.form');
+Route::post('/process-payment',  [CommandeController::class,'AddToCard'])->name('process-payment');
+Route::get('/payment/success', function () {
+    return 'Payment Successful!';
+})->name('payment.success');
+Route::get('/payment/failure', function () {
+    return 'Payment Failed!';
+})->name('payment.failure');
+
+Route::get('/payment/success', function () {
+    return view('payment-success');
+})->name('payment.success');
+
+Route::get('/payment/failure', function () {
+    return view('payment-failure');
+})->name('payment.failure');
+
+//test 
+// Route::post('/process-payment', [App\Http\Controllers\CommandeController::class, 'processPayment'])->name('process-payment');
+Route::get('/payment-success', function() {
+    return view('payment-success');
+})->name('payment-success');
+
+Route::get('/order', [CommandeController::class, 'commande']);
+Route::get('/Card', [CommandeController::class, 'Card']);
+Route::get('/AddToCard', [CommandeController::class, 'AddToCard']);
+

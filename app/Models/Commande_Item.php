@@ -9,9 +9,9 @@ class Commande_Item extends Model
 {
     protected $fillable = [
         'produit_id',
-        'quantity',
+        'quantite',
         'commande_id',
-        'price_in_time'
+        'prix'
     ];
 
     public function commande()

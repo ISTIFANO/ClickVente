@@ -143,16 +143,12 @@
         modal.classList.add("hidden");
     });
 
-    // Handle opening the edit modal
     editButtons.forEach(button => {
         button.addEventListener("click", () => {
             const productId = button.getAttribute("data-id");
 
-            // Here, you would ideally fetch the product details with AJAX and fill in the form.
-            // For now, I'm just showing the modal.
             editModal.classList.remove("hidden");
 
-            // Example of pre-filling the form with product data (you could use AJAX here)
             document.getElementById("editTitre").value = "Product Title " + productId;
             document.getElementById("editDescription").value = "Product Description " + productId;
             document.getElementById("editPrixUnite").value = "Product Price " + productId;
