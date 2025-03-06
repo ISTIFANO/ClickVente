@@ -62,7 +62,7 @@ Route::get('/Commande/showCommandes',[CommandeController::class,'showCommandes']
 //payement 
 
 Route::get('/payment', [PaymentController::class,'showPaymentForm'])->name('payment.form');
-Route::post('/process-payment',  [CommandeController::class,'AddToCard']);
+Route::post('/process-payment',  [CommandeController::class,'AddToCard'])->name('process-payment');
 Route::get('/payment/success', function () {
     return 'Payment Successful!';
 })->name('payment.success');
@@ -79,6 +79,10 @@ Route::get('/payment/failure', function () {
 })->name('payment.failure');
 
 //test 
+// Route::post('/process-payment', [App\Http\Controllers\CommandeController::class, 'processPayment'])->name('process-payment');
+Route::get('/payment-success', function() {
+    return view('payment-success');
+})->name('payment-success');
 
 Route::get('/order', [CommandeController::class, 'commande']);
 Route::get('/Card', [CommandeController::class, 'Card']);

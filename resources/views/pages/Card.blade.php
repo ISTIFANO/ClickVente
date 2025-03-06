@@ -1,3 +1,4 @@
+<!-- Card.blade.php -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://js.stripe.com/v3/"></script>
 
@@ -34,10 +35,14 @@
 
     <div id="jobModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
         <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
-            <form id="checkout-form" action="/process-payment" method="POST" class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+            <form id="checkout-form" action="{{ route('process-payment') }}" method="POST" class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
                 @csrf
                 <h2 class="text-2xl font-bold mb-6 text-center">Stripe Payment</h2>
                 
+                <div class="mb-4">
+                    <label for="cardholderName" class="block text-gray-700 font-semibold mb-2">Cardholder's Name</label>
+                    <input type="text" id="cardholderName" name="cardholderName" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
                 <div class="mb-4">
                     <label for="cardholderName" class="block text-gray-700 font-semibold mb-2">Cardholder's Name</label>
                     <input type="text" id="cardholderName" name="cardholderName" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -62,11 +67,21 @@
                     <label for="cvc" class="block text-gray-700 font-semibold mb-2">CVC</label>
                     <input type="text" id="cvc" name="cvc" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
-                <input type='hidden' name='stripeToken' id='stripe-token-id'>                              
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-semibold mb-2">Card Information</label>
+                    <div id="card-element" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
+                    <div id="card-errors" role="alert" class="mt-2 text-red-500 text-sm"></div>
+                </div>
+                
+                <input type="hidden" name="stripeToken" id="stripe-token-id">
 
-                <div id="card-element" class="form-control"></div>
-
-                <button id='pay-btn' type="submit" class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Submit Payment</button>
+                <button id="pay-btn" type="submit" class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                    Submit Payment
+                </button>
+                
+                <button type="button" id="closeModal" class="mt-4 w-full bg-gray-300 text-gray-700 py-2 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50">
+                    Cancel
+                </button>
             </form>
         </div>
     </div>
@@ -75,6 +90,7 @@
 @endif
 
 <script>
+    // Modal handling
     const modal = document.getElementById("jobModal");
     const openModal = document.getElementById("openModal");
     const closeModal = document.getElementById("closeModal");
@@ -86,33 +102,56 @@
     closeModal?.addEventListener("click", () => {
         modal.classList.add("hidden");
     });
-</script>
 
-<script type="text/javascript">
-    var stripe = Stripe('{{ env('STRIPE_SECRET') }}')
+    // Stripe integration
+    var stripe = Stripe('{{ env('STRIPE_PUBLISHABLE_KEY') }}');
     var elements = stripe.elements();
-    var cardElement = elements.create('card');
+    
+    // Create card element
+    var cardElement = elements.create('card', {
+        hidePostalCode: true,
+        style: {
+            base: {
+                fontSize: '16px',
+                color: '#32325d',
+                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                fontSmoothing: 'antialiased',
+                '::placeholder': {
+                    color: '#aab7c4'
+                }
+            },
+            invalid: {
+                color: '#fa755a',
+                iconColor: '#fa755a'
+            }
+        }
+    });
+    
     cardElement.mount('#card-element');
 
-    function createToken() {
-        document.getElementById("pay-btn").disabled = true;
-        // console.log('AAMIR');
-        console.log(cardElement);
-        
-        stripe.createToken(cardElement).then(function(result) {
+    // Handle form submission
+    var form = document.getElementById('checkout-form');
+    var cardErrors = document.getElementById('card-errors');
+    var submitButton = document.getElementById('pay-btn');
 
-            if(result.error) {
-                document.getElementById("pay-btn").disabled = false;
-                alert(result.error.message);
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        submitButton.disabled = true;
+        submitButton.textContent = 'Processing...';
+        
+        // Create token
+        stripe.createToken(cardElement).then(function(result) {
+            if (result.error) {
+                // Show error
+                cardErrors.textContent = result.error.message;
+                submitButton.disabled = false;
+                submitButton.textContent = 'Submit Payment';
             } else {
-                document.getElementById("stripe-token-id").value = result.token.id;
-                document.getElementById('checkout-form').submit();
+                // Send token to server
+                document.getElementById('stripe-token-id').value = result.token.id;
+                form.submit();
             }
         });
-    }
-
-    document.getElementById('checkout-form').addEventListener('submit', function(event) {
-        event.preventDefault();
-        createToken();
     });
 </script>

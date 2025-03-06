@@ -6,6 +6,7 @@ use Stripe\Charge;
 use Stripe\Stripe;
 use App\Models\Commande;
 use Illuminate\Http\Request;
+use Stripe\Checkout\Session;
 use App\Models\Commande_Item;
 use Illuminate\Support\Facades\DB;
 
@@ -44,7 +45,6 @@ return view('content.Validate',compact('commande'));
                 return $item["price"] * $item["stock"]; 
             }, $pannierinfo));
         }
-
         $user = auth()->id();
         $idcommandes = DB::table('commandes')->insertGetId([
             'prix_totale' => $this->total,
@@ -72,26 +72,39 @@ return view('content.Validate',compact('commande'));
 
     public function AddToCard(Request $request)
     {
-        $token = $request->stripeToken;
-  Stripe::setApiKey(env('STRIPE_SECRET'));
-dd($token); 
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+    
+        Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => [
+                [
+                    'price_data' => [
+                        'currency' => 'usd',
+                        'unit_amount' => $this->total * 100,
+                        'product_data' => [
+                            'name' => "Order #" . $this->commande(),
+                        ],
+                    ],
+                    'quantity' => 1,
+                ]
+            ],
+            'mode' => 'payment',
+            'success_url' => route('payment-success'),
+            'cancel_url' => route('payment.failure'),
+        ]);
+    
         try {
-            Charge::create([
-                'amount' => $this->total * 100, 
-                'currency' => 'usd',
-                'description' => 'Aamir el amiri',
-                'source' => $token,
-            ]);
-
             $commandeId = $this->commande();  
             DB::table('commandes')->where('id', $commandeId)->update([
                 'status' => 'paid',
             ]);
-
+    
             session()->forget('pannier');  
             return redirect()->route('payment-success');
         } catch (\Exception $e) {
             return view('payment-failure')->with('error', 'Error: ' . $e->getMessage());
         }
     }
-}
+    
+    }
+
